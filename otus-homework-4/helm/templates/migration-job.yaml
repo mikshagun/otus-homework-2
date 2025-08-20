@@ -14,7 +14,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: app-migration
-          image: "mshagun/user-service:1.0"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: IfNotPresent
           env:
             - name: SPRING_PROFILES_ACTIVE
