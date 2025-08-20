@@ -6,11 +6,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example</groupId>
-    <artifactId>otus-homework-2</artifactId>
+    <artifactId>welcome-service</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>otus-homework-2</name>
+    <name>welcome-service</name>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

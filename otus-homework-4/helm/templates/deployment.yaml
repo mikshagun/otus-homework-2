@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Release.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.targetPort }}
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: {{ .Values.springProfiles.prod }}
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgresql.secretName }}
+                  key: postgres-password
+            - name: SPRING_CONFIG_IMPORT
+              value: optional:file:/opt/app/config/application.yaml
+          volumeMounts:
+            - name: config-volume
+              mountPath: /opt/app/config
+              readOnly: true
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ .Release.Name }}-app-config
+            items:
+                - key: application.yaml
+                  path: application.yaml

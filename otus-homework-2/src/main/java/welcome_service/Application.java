@@ -1,4 +1,4 @@
-package otus_homework;
+package welcome_service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

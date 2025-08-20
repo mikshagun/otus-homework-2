@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: user-service-migration-job
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "1"
+    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+spec:
+  template:
+    metadata:
+      name: migration-job
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: app-migration
+          image: "mshagun/user-service:1.0"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: migration
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: my-postgres-postgresql
+                  key: postgres-password
+            - name: SPRING_CONFIG_IMPORT
+              value: optional:file:/opt/app/config/application.yaml
+          volumeMounts:
+            - name: config-volume
+              mountPath: /opt/app/config
+              readOnly: true
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ .Release.Name }}-app-config
+            items:
+                - key: application.yaml
+                  path: application.yaml
