@@ -27,7 +27,7 @@ spec:
                   name: {{ .Values.postgresql.secretName }}
                   key: postgres-password
             - name: SPRING_CONFIG_IMPORT
-              value: optional:file:/opt/app/config/application.yaml
+              value: optional:file:/opt/app/config/application-{{ .Values.springProfiles.prod }}.yaml
           volumeMounts:
             - name: config-volume
               mountPath: /opt/app/config
@@ -37,5 +37,5 @@ spec:
           configMap:
             name: {{ .Release.Name }}-app-config
             items:
-                - key: application.yaml
-                  path: application.yaml
+                - key: application-{{ .Values.springProfiles.prod }}.yaml
+                  path: application-{{ .Values.springProfiles.prod }}.yaml
