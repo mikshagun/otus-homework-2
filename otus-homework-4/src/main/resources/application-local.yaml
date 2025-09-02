@@ -7,5 +7,15 @@ spring:
     change-log: classpath:/db/changelog/db.changelog-master.yaml
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
-    username: user
-    password: password
+    username: postgres
+    password: postgress
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    prometheus:
+      enabled: true
+    metrics:
+      enabled: true

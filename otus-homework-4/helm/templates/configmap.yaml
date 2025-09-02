@@ -18,6 +18,16 @@ data:
         url: jdbc:postgresql://{{ .Values.postgresql.host }}:{{ .Values.postgresql.port }}/{{ .Values.postgresql.name }}
         username: {{ .Values.postgresql.username }}
         password: ${SPRING_DATASOURCE_PASSWORD}
+    management:
+      endpoints:
+        web:
+          exposure:
+            include: health,info,metrics,prometheus
+      endpoint:
+        prometheus:
+          enabled: true
+      metrics:
+        enabled: true
 
   application-migration.yaml: |
     spring:
