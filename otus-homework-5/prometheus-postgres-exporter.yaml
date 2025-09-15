@@ -1,0 +1,11 @@
+# values.yaml (Helm)
+env:
+  - name: DATA_SOURCE_NAME
+    value: "postgresql://postgres:$(PG_PASSWORD)@my-postgres-postgresql:5432/postgres?sslmode=disable"
+
+extraEnv:
+  - name: PG_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: my-postgres-postgresql
+        key: postgres-password
